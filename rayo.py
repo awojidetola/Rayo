@@ -31,7 +31,6 @@ elif category == "Entertainment":
 elif category == "Sports":
     url = "https://www.bbc.com/sport"
 
-st.write("Here are the latest", category,"news headlines from BBC today")
 
 one_day_ago = datetime.now() - timedelta(days=1)
 response = requests.get(url)
@@ -68,7 +67,15 @@ else:
 
 news_index = np.arange(1,len(news_headlines)+1)
 daily_news_data = pd.DataFrame({'Headline News': news_headlines, 'Link': news_links}, index=news_index)
-st.table(daily_news_data['Headline News'])
+
+
+st.button("Clear", type="primary")
+if st.button('Submit'):
+    st.write("Here are the latest", category,"news headlines from BBC today")
+    st.table(daily_news_data['Headline News'])
+else:
+    st.empty()
+
 
 #Extract Content of the news article
 input_index = st.number_input("Enter the index of the news article you want to read", step = 1, min_value = 1, max_value = len(news_headlines))
@@ -85,7 +92,20 @@ def full_text(url):
         print("Failed to retrieve the webpage. Status code:", response.status_code)
     return text
 
-st.write("Here is the summary of the news article you selected")
+#pipe = pipeline("summarization", model="facebook/bart-large-cnn")
+#def generate_summary(content):
+ #   summary = pipe(content, max_length=150, min_length=50, do_sample=False)
+  #  summarized_text = summary[0]['summary_text']
+   # return summarized_text
+
 full_story = full_text(story_link)
-st.write(full_story)
-st.write(story_link)
+
+st.button("Clear", type="primary",key=5)
+if st.button('Submit',key=6):
+    st.write(full_story)
+    st.write(story_link)
+else:
+    st.empty()
+
+#summary = generate_summary(full_story[0])
+#st.write(summary)
