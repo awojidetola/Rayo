@@ -89,13 +89,15 @@ if st.button('Submit',key=6):
 # Function to generate a summary
     st.subheader(daily_news_data.iloc[input_index-1]['Headline News'])
 
-    tokenizer=AutoTokenizer.from_pretrained('T5-base')
-    model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
-    inputs=tokenizer.encode("sumarize: " +full_story,return_tensors='pt', max_length=1024, truncation=True)
-    output = model.generate(inputs, min_length=80, max_length=100)
-    summary=tokenizer.decode(output[0])
-    st.write(summary)
+    def t5base(x):
+        tokenizer=AutoTokenizer.from_pretrained('T5-base')
+        model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
+        inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt')
+        output = model.generate(inputs, min_length=80, max_length=150, num_beams=4)
+        summary=tokenizer.decode(output[0], skip_special_tokens=True)
+        return summary
 
+    st.write(t5base(full_story))
     st.link_button("Check full story", story_link)
 else:
     st.empty()
