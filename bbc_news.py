@@ -42,7 +42,6 @@ elif category == "Entertainment & Arts":
 
 one_day_ago = datetime.now() - timedelta(days=1)
 
-@st.cache_data
 def extract_news(url):
 
     response = requests.get(url)
@@ -75,8 +74,6 @@ st.table(daily_news_data['Headline News'])
 input_index = st.number_input("Enter the index of the news article you want to read", step = 1, min_value = 1, max_value = len(news_headlines))
 story_link = daily_news_data.iloc[input_index-1]['Link']
 
-
-@st.cache_data
 def full_text(url, suppress_st_warning=True):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -92,7 +89,7 @@ if st.button('Submit',key=6):
 
     model_name = "facebook/bart-large-cnn"
 
-    @st.cache_resource()
+    @st.cache
     def summarizer_model(input_text):
         pipe = pipeline("summarization", model=model_name, tokenizer=model_name)
         summary = pipe(input_text, max_length=400, min_length=100, do_sample=False)
