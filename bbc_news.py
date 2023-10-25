@@ -89,6 +89,7 @@ if st.button('Submit',key=6):
 # Function to generate a summary
     st.subheader(daily_news_data.iloc[input_index-1]['Headline News'])
 
+    @st.cache_resource
     def t5base(x):
         tokenizer=AutoTokenizer.from_pretrained('T5-base')
         model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
