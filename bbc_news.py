@@ -94,8 +94,12 @@ if st.button('Submit',key=6):
         tokenizer=AutoTokenizer.from_pretrained('T5-base')
         model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
         inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt')
-        output = model.generate(inputs, min_length=80, max_length=150, num_beams=4)
+        output = model.generate(inputs, min_length=100, max_length=200, num_beams=4)
         summary=tokenizer.decode(output[0], skip_special_tokens=True)
+        # Capitalize first letter of summary
+        summary = summary[0].upper() + summary[1:]
+        # Capitalize first letter of each sentence
+        summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
         return summary
 
     st.write(t5base(full_story))
