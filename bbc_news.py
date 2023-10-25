@@ -7,7 +7,7 @@ from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
 from transformers import BartTokenizer, TFBartForConditionalGeneration, BartConfig
 
-model_name = "sshleifer/distilbart-cnn-12-6"
+model_name = "facebook/bart-large-cnn"
 config = BartConfig.from_pretrained(model_name)
 tokenizer = BartTokenizer.from_pretrained(model_name)
 model = TFBartForConditionalGeneration.from_pretrained(model_name, from_pt=True)
