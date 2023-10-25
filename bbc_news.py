@@ -89,12 +89,12 @@ if st.button('Submit',key=6):
 # Function to generate a summary
     st.subheader(daily_news_data.iloc[input_index-1]['Headline News'])
 
-    @st.cache_resource
+    @st.cache_resource(show_spinner=False)
     def t5base(x):
         tokenizer=AutoTokenizer.from_pretrained('T5-base')
         model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
         inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt')
-        output = model.generate(inputs, min_length=100, max_length=200, num_beams=4)
+        output = model.generate(inputs, min_length=150, max_length=250, num_beams=4)
         summary=tokenizer.decode(output[0], skip_special_tokens=True)
         # Capitalize first letter of summary
         summary = summary[0].upper() + summary[1:]
