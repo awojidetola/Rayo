@@ -10,7 +10,7 @@ from transformers import BartTokenizer, TFBartForConditionalGeneration, BartConf
 model_name = "sshleifer/distilbart-cnn-12-6"
 config = BartConfig.from_pretrained(model_name)
 tokenizer = BartTokenizer.from_pretrained(model_name)
-model = TFBartForConditionalGeneration.from_pretrained(model_name)
+model = TFBartForConditionalGeneration.from_pretrained(model_name, from_pt=True)
 
 st.set_page_config(layout="wide")
 st.title("Stay Informed with Rayo")
