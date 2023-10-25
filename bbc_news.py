@@ -5,8 +5,10 @@ import pandas as pd
 import numpy as np
 from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
-from transformers import BartTokenizer, TFBartForConditionalGeneration
+from transformers import BartTokenizer, TFBartForConditionalGeneration, BartConfig
+
 model_name = "facebook/bart-large-cnn"
+config = BartConfig.from_pretrained(model_name)
 tokenizer = BartTokenizer.from_pretrained(model_name)
 model = TFBartForConditionalGeneration.from_pretrained(model_name)
 
