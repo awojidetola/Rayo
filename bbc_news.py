@@ -8,9 +8,12 @@ from bs4 import BeautifulSoup
 #import tensorflow as tf
 from transformers import pipeline
 import torch
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-#from transformers import AutoTokenizer, TFBartForConditionalGeneration, BartConfig, BartTokenizer
+from transformers import BartTokenizer, TFBartForConditionalGeneration
+model_name = "facebook/bart-large-cnn"
+tokenizer = BartTokenizer.from_pretrained(model_name)
+model = TFBartForConditionalGeneration.from_pretrained(model_name)
 
+st.set_page_config(layout="wide")
 st.title("Stay Informed with Rayo")
 st.subheader("The Ultimate News Companion")
 
@@ -88,17 +91,14 @@ full_story = full_text(story_link)
 st.button("Clear", type="primary",key=5)
 if st.button('Submit',key=6):
 
+# Function to generate a summary
     @st.cache
     def generate_summary(input_text):
-        model_name = "facebook/bart-large-cnn"
-        tokenizer = AutoTokenizer.from_pretrained(model_name)
-        model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-
-        input_ids = tokenizer.encode(input_text, return_tensors="pt", max_length=1024, truncation=True)
-        summary_ids = model.generate(input_ids, max_length=150, min_length=50, length_penalty=2.0, num_beams=4, early_stopping=True)
+        input_ids = tokenizer(input_text, return_tensors="tf").input_ids
+        summary_ids = model.generate(input_ids, max_length=150, min_length=40, num_beams=4, early_stopping=True)
         summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
         return summary
-            
+
     summary = generate_summary(full_story)
     st.subheader(daily_news_data.iloc[input_index-1]['Headline News'])
     st.write(summary[0]['summary_text'])
