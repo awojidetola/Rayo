@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
-import tensorflow as tf
+#import tensorflow as tf
 from transformers import pipeline
 import torch
 #from transformers import AutoTokenizer, TFBartForConditionalGeneration, BartConfig, BartTokenizer
