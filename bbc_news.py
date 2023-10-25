@@ -86,7 +86,7 @@ st.button("Clear", type="primary",key=5)
 if st.button('Submit',key=6):
 
 # Function to generate a summary
-    @st.cache
+    @st.cache_resource
     def generate_summary(input_text):
         summarizer = pipeline("summarization", model="mrm8488/roberta-med-small_shared-finetuned-bbc_xsum-summarization")
         summary = summarizer(input_text, max_length=150, min_length=50, do_sample=False)
