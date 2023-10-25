@@ -7,9 +7,9 @@ from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
 from transformers import BartTokenizer, TFBartForConditionalGeneration, BartConfig,PegasusTokenizerFast
 
-model_name = "google/pegasus-cnn_dailymail"
+model_name = "mrm8488/roberta-med-small_shared-finetuned-bbc_xsum-summarization"
 config = BartConfig.from_pretrained(model_name)
-tokenizer = PegasusTokenizerFast.from_pretrained(model_name)
+tokenizer = BartTokenizer.from_pretrained(model_name)
 model = TFBartForConditionalGeneration.from_pretrained(model_name, from_pt=True)
 
 st.set_page_config(layout="wide")
