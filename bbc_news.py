@@ -5,7 +5,8 @@ import pandas as pd
 import numpy as np
 from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
-from transformers import pipeline
+import torch
+from transformers import AutoTokenizer, AutoModelWithLMHead
 
 st.set_page_config(layout="wide")
 st.title("Stay Informed with Rayo")
@@ -86,14 +87,15 @@ st.button("Clear", type="primary",key=5)
 if st.button('Submit',key=6):
 
 # Function to generate a summary
-    def generate_summary(input_text):
-        summarizer = pipeline("summarization", model="mrm8488/roberta-med-small_shared-finetuned-bbc_xsum-summarization")
-        summary = summarizer(input_text, max_length=150, min_length=50, do_sample=False)
-        return summary
-
-    summary = generate_summary(full_story)
     st.subheader(daily_news_data.iloc[input_index-1]['Headline News'])
-    st.write(summary[0]['summary_text'])
+
+    tokenizer=AutoTokenizer.from_pretrained('T5-base')
+    model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
+    inputs=tokenizer.encode("sumarize: " +full_story,return_tensors='pt', max_length=1024, truncation=True)
+    output = model.generate(inputs, min_length=80, max_length=100)
+    summary=tokenizer.decode(output[0])
+    st.write(summary)
+
     st.link_button("Check full story", story_link)
 else:
     st.empty()
