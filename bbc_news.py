@@ -5,12 +5,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
-from transformers import BartTokenizer, TFBartForConditionalGeneration, BartConfig,PegasusTokenizerFast
-
-model_name = "mrm8488/roberta-med-small_shared-finetuned-bbc_xsum-summarization"
-config = BartConfig.from_pretrained(model_name)
-tokenizer = BartTokenizer.from_pretrained(model_name)
-model = TFBartForConditionalGeneration.from_pretrained(model_name, from_pt=True)
+from transformers import pipeline
 
 st.set_page_config(layout="wide")
 st.title("Stay Informed with Rayo")
@@ -93,9 +88,8 @@ if st.button('Submit',key=6):
 # Function to generate a summary
     @st.cache
     def generate_summary(input_text):
-        input_ids = tokenizer(input_text, return_tensors="tf").input_ids
-        summary_ids = model.generate(input_ids, max_length=150, min_length=40, num_beams=4, early_stopping=True)
-        summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+        summarizer = pipeline("summarization", model="mrm8488/roberta-med-small_shared-finetuned-bbc_xsum-summarization")
+        summary = summarizer(input_text, max_length=150, min_length=50, do_sample=False)
         return summary
 
     summary = generate_summary(full_story)
