@@ -79,7 +79,7 @@ news_index = np.arange(1,len(news_headlines)+1)
 daily_news_data = pd.DataFrame({'Headline News': news_headlines, 'Link': news_links}, index=news_index)
 
 st.write("Here are the latest", category,"news headlines from BBC today")
-output_data = pd.DataFrame({'Index': news_index, 'Headline News':news_headlines})
+output_data = pd.DataFrame({'Index': news_index, 'Headline News':news_headlines}).reset_index(drop=True)
 st.table(output_data)
 
 #Extract Content of the news article
