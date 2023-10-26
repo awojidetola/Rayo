@@ -7,6 +7,10 @@ from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
 import torch
 from transformers import AutoTokenizer, AutoModelWithLMHead
+import spacy
+
+@st.cache_data
+nlp = spacy.load('en_core_web_sm')
 
 st.set_page_config(layout="wide")
 st.title("Stay Informed with Rayo")
@@ -100,6 +104,9 @@ if st.button('Submit',key=6):
         summary = summary[0].upper() + summary[1:]
         # Capitalize first letter of each sentence
         summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
+        doc = nlp(summary)
+        summary = ' '.join([token.text.capitalize() if token.ent_type_ == 'PERSON' else token.text for token in doc])
+
         return summary
 
     st.write(t5base(full_story))
