@@ -91,28 +91,25 @@ def full_text(url, suppress_st_warning=True):
 
 full_story = full_text(story_link)
 
+@st.cache_resource(show_spinner="Loading Summary",max_entries=1000)
+def t5base(x):
+    tokenizer=AutoTokenizer.from_pretrained('T5-base')
+    model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
+    inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt')
+    output = model.generate(inputs, min_length=120, max_length=200)
+    summary=tokenizer.decode(output[0], skip_special_tokens=True)
+    # Capitalize first letter of summary
+    summary = summary[0].upper() + summary[1:]
+    # Capitalize first letter of each sentence
+    summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
+    nlp = load_english()
+    doc = nlp(summary)
+    summary = ' '.join([token.text.capitalize() if token.ent_type_ == 'PERSON' else token.text for token in doc])
+    return summary
+
 st.button("Clear", type="primary",key=5)
 if st.button('Submit',key=6):
-
-# Function to generate a summary
     st.subheader(daily_news_data.iloc[input_index-1]['Headline News'])
-
-    @st.cache_resource(show_spinner="Loading Summary",max_entries=1000)
-    def t5base(x):
-        tokenizer=AutoTokenizer.from_pretrained('T5-base')
-        model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
-        inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt')
-        output = model.generate(inputs, min_length=120, max_length=200)
-        summary=tokenizer.decode(output[0], skip_special_tokens=True)
-        # Capitalize first letter of summary
-        summary = summary[0].upper() + summary[1:]
-        # Capitalize first letter of each sentence
-        summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
-        nlp = load_english()
-        doc = nlp(summary)
-        summary = ' '.join([token.text.capitalize() if token.ent_type_ == 'PERSON' else token.text for token in doc])
-        return summary
-
     st.write(t5base(full_story))
     st.link_button("Check full story", story_link)
 else:
