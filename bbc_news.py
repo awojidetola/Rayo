@@ -98,10 +98,12 @@ def t5base(x):
     summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
     return summary
 
+our_summary = t5base(full_story)
+
 st.button("Clear", type="primary",key=5)
 if st.button('Submit',key=6):
     st.subheader(daily_news_data.iloc[input_index-1]['Headline News'])
-    st.write(t5base(full_story))
+    st.write(our_summary)
     st.link_button("Check full story", story_link)
 else:
     st.empty()
