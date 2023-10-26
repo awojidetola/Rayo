@@ -1,3 +1,5 @@
+import nltk
+from nltk import word_tokenize, pos_tag
 import streamlit as st
 import requests
 import re
@@ -7,6 +9,8 @@ from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
 import torch
 from transformers import AutoTokenizer, AutoModelWithLMHead
+
+
 
 st.set_page_config(layout="wide")
 st.title("Stay Informed with Rayo")
@@ -40,6 +44,13 @@ elif category == "Entertainment & Arts":
     url = "https://www.bbc.com/news/entertainment_and_arts"
 
 one_day_ago = datetime.now() - timedelta(days=1)
+
+@st.cache_data(show_spinner=False)
+def download_nltk():
+    nltk.download("punkt")
+    nltk.download("averaged_perceptron_tagger")
+download_nltk()
+
 
 @st.cache_data(show_spinner=False)
 def extract_news(url):
@@ -96,7 +107,11 @@ def t5base(x):
     summary = summary[0].upper() + summary[1:]
     # Capitalize first letter of each sentence
     summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
-    return summary
+    words = word_tokenize(summary)
+    pos_tags = pos_tag(words)
+    words = summary.split()
+    capitalized_words = [word if tag != "NNP" else word.capitalize() for word, tag in pos_tags]
+    return " ".join(capitalized_words)
 
 our_summary = t5base(full_story)
 
