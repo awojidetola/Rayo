@@ -111,11 +111,22 @@ def t5base(x):
     summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
     words = word_tokenize(summary)
     pos_tags = pos_tag(words)
-    words = summary.split()
-    #capitalized_words = [word if tag != "NNP" else word.capitalize() for word, tag in pos_tags]
-    capitalized_words = [word.capitalize() if tag in ["NN", "NNS"] or word.lower() in ["inc"] or word in ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] else word for word, tag in zip(words, pos_tags)]
-    return " ".join(capitalized_words)
 
+    #words = summary.split()
+    #capitalized_words = [word if tag != "NNP" else word.capitalize() for word, tag in pos_tags]
+    #capitalized_words = [word.capitalize() if tag in ["NN", "NNS"] or word.lower() in ["inc"] or word in ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] else word for word, tag in zip(words, pos_tags)]
+    #return " ".join(capitalized_words)
+
+    def capitalize_words(word, tag):
+        # Custom capitalization rules
+        if tag in ["NNP", "NNPS"] or word.lower() in ["inc"] or word.lower() in ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]:
+            return word.capitalize()
+        else:
+            return word
+
+    # Apply capitalization rules based on POS tags and custom rules
+    capitalized_words = [capitalize_words(word, tag) for word, tag in zip(words, pos_tags)]
+    return " ".join(capitalized_words)
 
 our_summary = t5base(full_story)
 
