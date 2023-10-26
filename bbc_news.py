@@ -7,12 +7,6 @@ from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
 import torch
 from transformers import AutoTokenizer, AutoModelWithLMHead
-import spacy
-
-@st.cache_data(ttl=3600)
-def load_english():
-    nlp = spacy.load('en_core_web_sm')
-    return nlp
 
 st.set_page_config(layout="wide")
 st.title("Stay Informed with Rayo")
@@ -102,9 +96,6 @@ def t5base(x):
     summary = summary[0].upper() + summary[1:]
     # Capitalize first letter of each sentence
     summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
-    nlp = load_english()
-    doc = nlp(summary)
-    summary = ' '.join([token.text.capitalize() if token.ent_type_ in ['PERSON', 'PLACE', 'ORG', 'GPE'] else token.text for token in doc])
     return summary
 
 st.button("Clear", type="primary",key=5)
