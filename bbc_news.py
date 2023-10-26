@@ -113,7 +113,7 @@ def t5base(x):
     pos_tags = pos_tag(words)
     words = summary.split()
     #capitalized_words = [word if tag != "NNP" else word.capitalize() for word, tag in pos_tags]
-    capitalized_words = [word.capitalize() if tag in ["NNP", "NNPS"] or word.lower() in ["inc"] or word in ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] else word for word, tag in zip(words, pos_tags)]
+    capitalized_words = [word.capitalize() if tag in ["NN", "NNS"] or word.lower() in ["inc"] or word in ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] else word for word, tag in zip(words, pos_tags)]
     return " ".join(capitalized_words)
 
 
