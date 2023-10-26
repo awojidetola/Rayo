@@ -9,7 +9,6 @@ import torch
 from transformers import AutoTokenizer, AutoModelWithLMHead
 import spacy
 
-@st.cache_data
 nlp = spacy.load('en_core_web_sm')
 
 st.set_page_config(layout="wide")
