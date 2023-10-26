@@ -89,10 +89,6 @@ def full_text(url, suppress_st_warning=True):
 
 full_story = full_text(story_link)
 
-words = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday',
-         'january','february','march','april','may','june','july','august','september',
-         'october','november','december','china','usa','uk','ai']
-
 @st.cache_resource(show_spinner="Loading Summary",max_entries=1000)
 def t5base(x):
     tokenizer=AutoTokenizer.from_pretrained('T5-base')
@@ -104,7 +100,7 @@ def t5base(x):
     summary = summary[0].upper() + summary[1:]
     # Capitalize first letter of each sentence
     summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
-    return ' '.join([word.capitalize() if word.lower() in words else word for word in summary.split()])
+    return summary
 
 our_summary = t5base(full_story)
 
