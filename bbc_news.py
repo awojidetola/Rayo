@@ -81,10 +81,10 @@ daily_news_data = pd.DataFrame({'Headline News': news_headlines, 'Link': news_li
 st.write("Here are the latest", category,"news headlines from BBC today")
 output_data = pd.DataFrame({'Index': news_index, 'Headline News':news_headlines})
 output_data = output_data.set_index('Index')
-st.dataframe(output_data)
+st.table(output_data)
 
 #Extract Content of the news article
-input_index = st.number_input("Enter the index of the news article you want to read", step = 1, min_value = 1, max_value = len(news_headlines))
+input_index = st.number_input("Enter the corresponding index number of the news article you want to read", step = 1, min_value = 1, max_value = len(news_headlines))
 story_link = daily_news_data.iloc[input_index-1]['Link']
 
 @st.cache_data(show_spinner=False)
