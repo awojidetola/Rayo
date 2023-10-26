@@ -9,7 +9,10 @@ import torch
 from transformers import AutoTokenizer, AutoModelWithLMHead
 import spacy
 
-nlp = spacy.load('en_core_web_sm')
+@st.cache_data(ttl=3600)
+def load_english():
+    nlp = spacy.load('en_core_web_sm')
+    return nlp
 
 st.set_page_config(layout="wide")
 st.title("Stay Informed with Rayo")
@@ -44,6 +47,7 @@ elif category == "Entertainment & Arts":
 
 one_day_ago = datetime.now() - timedelta(days=1)
 
+@st.cache_data(show_spinner=False)
 def extract_news(url):
 
     response = requests.get(url)
@@ -76,6 +80,7 @@ st.table(daily_news_data['Headline News'])
 input_index = st.number_input("Enter the index of the news article you want to read", step = 1, min_value = 1, max_value = len(news_headlines))
 story_link = daily_news_data.iloc[input_index-1]['Link']
 
+@st.cache_data(show_spinner=False)
 def full_text(url, suppress_st_warning=True):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -92,7 +97,7 @@ if st.button('Submit',key=6):
 # Function to generate a summary
     st.subheader(daily_news_data.iloc[input_index-1]['Headline News'])
 
-    @st.cache_resource(show_spinner=False)
+    @st.cache_resource(show_spinner="Loading Summary",max_entries=1000)
     def t5base(x):
         tokenizer=AutoTokenizer.from_pretrained('T5-base')
         model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
@@ -103,9 +108,9 @@ if st.button('Submit',key=6):
         summary = summary[0].upper() + summary[1:]
         # Capitalize first letter of each sentence
         summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
+        nlp = load_english()
         doc = nlp(summary)
         summary = ' '.join([token.text.capitalize() if token.ent_type_ == 'PERSON' else token.text for token in doc])
-
         return summary
 
     st.write(t5base(full_story))
