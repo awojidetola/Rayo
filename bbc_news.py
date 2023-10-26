@@ -95,7 +95,7 @@ full_story = full_text(story_link)
 def t5base(x):
     tokenizer=AutoTokenizer.from_pretrained('T5-base')
     model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
-    inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt')
+    inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt', max_length=1024, truncation=True)
     output = model.generate(inputs, min_length=120, max_length=200)
     summary=tokenizer.decode(output[0], skip_special_tokens=True)
     # Capitalize first letter of summary
@@ -104,7 +104,7 @@ def t5base(x):
     summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
     nlp = load_english()
     doc = nlp(summary)
-    summary = ' '.join([token.text.capitalize() if token.ent_type_ == 'PERSON' else token.text for token in doc])
+    summary = ' '.join([token.text.capitalize() if token.ent_type_ in ['PERSON', 'PLACE', 'ORG', 'GPE'] else token.text for token in doc])
     return summary
 
 st.button("Clear", type="primary",key=5)
