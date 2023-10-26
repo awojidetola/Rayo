@@ -97,7 +97,7 @@ if st.button('Submit',key=6):
         tokenizer=AutoTokenizer.from_pretrained('T5-base')
         model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
         inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt')
-        output = model.generate(inputs, min_length=150, max_length=250, num_beams=4)
+        output = model.generate(inputs, min_length=120, max_length=200)
         summary=tokenizer.decode(output[0], skip_special_tokens=True)
         # Capitalize first letter of summary
         summary = summary[0].upper() + summary[1:]
