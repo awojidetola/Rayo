@@ -1,5 +1,3 @@
-import nltk
-from nltk import word_tokenize, pos_tag
 import streamlit as st
 import requests
 import re
@@ -44,13 +42,6 @@ elif category == "Entertainment & Arts":
     url = "https://www.bbc.com/news/entertainment_and_arts"
 
 one_day_ago = datetime.now() - timedelta(days=1)
-
-@st.cache_data(show_spinner=False)
-def download_nltk():
-    nltk.download("punkt")
-    nltk.download("averaged_perceptron_tagger")
-download_nltk()
-
 
 @st.cache_data(show_spinner=False)
 def extract_news(url):
@@ -98,6 +89,10 @@ def full_text(url, suppress_st_warning=True):
 
 full_story = full_text(story_link)
 
+words = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday',
+         'january','february','march','april','may','june','july','august','september',
+         'october','november','december','china','usa','uk','ai']
+
 @st.cache_resource(show_spinner="Loading Summary",max_entries=1000)
 def t5base(x):
     tokenizer=AutoTokenizer.from_pretrained('T5-base')
@@ -109,13 +104,7 @@ def t5base(x):
     summary = summary[0].upper() + summary[1:]
     # Capitalize first letter of each sentence
     summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
-    words = word_tokenize(summary)
-    pos_tags = pos_tag(words)
-
-    words = summary.split()
-    capitalized_words = [word if tag != "NNP" else word.capitalize() for word, tag in pos_tags]
-    capitalized_words = [word.capitalize() if tag in ["NNP", "NNPS"] or word.lower() in ["inc"] or word in ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] else word for word, tag in zip(words, pos_tags)]
-    return " ".join(capitalized_words)
+    return ' '.join([word.capitalize() if word.lower() in words else word for word in summary.split()])
 
 our_summary = t5base(full_story)
 
