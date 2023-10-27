@@ -14,3 +14,6 @@ To run the app locally, use : `streamlit run bbc_news.py` and install the requir
 
 ### Deployment
 The app was deployed to streamlit cloud and can be accessed here: [http://bbcnewsbyrayo.streamlit.app](http://bbcnewsbyrayo.streamlit.app)
+
+### Demo
+https://youtu.be/QRIM7vpctkI
