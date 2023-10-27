@@ -41,7 +41,7 @@ elif category == "Entertainment & Arts":
 
 one_day_ago = datetime.now() - timedelta(days=1)
 
-@st.cache_data(show_spinner=False, ttl=1800)
+@st.cache_data(show_spinner=False, ttl=1800, max_entries = 10)
 def extract_news(url):
 
     response = requests.get(url)
@@ -76,7 +76,7 @@ st.table(output_data)
 input_index = st.number_input("Enter the corresponding index number of the news article you want to read", step = 1, min_value = 1, max_value = len(news_headlines))
 story_link = daily_news_data.iloc[input_index-1]['Link']
 
-@st.cache_data(show_spinner=False,ttl=1800)
+@st.cache_data(show_spinner=False,ttl=1800m max_entries = 10)
 def full_text(url, suppress_st_warning=True):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -87,7 +87,7 @@ def full_text(url, suppress_st_warning=True):
 
 full_story = full_text(story_link)
 
-@st.cache_resource(show_spinner="Loading Summary",max_entries=1000)
+@st.cache_resource(show_spinner="Loading Summary",max_entries=10)
 def t5base(x):
     tokenizer=AutoTokenizer.from_pretrained('T5-base')
     model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
