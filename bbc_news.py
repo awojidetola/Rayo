@@ -76,7 +76,7 @@ st.table(output_data)
 input_index = st.number_input("Enter the corresponding index number of the news article you want to read", step = 1, min_value = 1, max_value = len(news_headlines))
 story_link = daily_news_data.iloc[input_index-1]['Link']
 
-@st.cache_data(show_spinner=False,ttl=1800m max_entries = 10)
+@st.cache_data(show_spinner=False,ttl=1800,max_entries = 10)
 def full_text(url, suppress_st_warning=True):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
