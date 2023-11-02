@@ -8,8 +8,6 @@ from bs4 import BeautifulSoup
 import torch
 from transformers import AutoTokenizer, AutoModelWithLMHead
 
-pipe = pipeline("summarization", model="facebook/bart-large-cnn")
-
 
 st.set_page_config(layout="wide")
 st.title("Stay Informed with Rayo")
