@@ -72,7 +72,7 @@ st.write("Here are the latest", category,"news headlines from BBC today")
 output_data = pd.DataFrame({'Index': news_index, 'Headline News':news_headlines})
 output_data = output_data.set_index('Index')
 if output_data.empty:
-    ST.write ("There are no recent news in this category")
+    st.write ("There are no recent news in this category")
 else:
     st.table(output_data)
     #Extract Content of the news article
