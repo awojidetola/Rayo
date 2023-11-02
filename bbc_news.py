@@ -24,7 +24,7 @@ Experience Rayo where the world's news meets your interest, all in one place.
 #Select a news category
 default_url = "https://www.bbc.com"
 
-category = st.selectbox("Select a news category of your choice",("World","Business","Politics","Health","Technology","Entertainment & Arts"))
+category = st.selectbox("Select a news category of your choice",("World","Business","Politics","Health","Science & Environment","Technology","Entertainment & Arts"))
 if category == "World":
     url = "https://www.bbc.com/news/world"
 elif category == "Business":
@@ -33,6 +33,8 @@ elif category == "Politics":
     url = "https://www.bbc.com/news/politics"
 elif category == "Health":
     url = "https://www.bbc.com/news/health"
+elif category == "Science & Environment":
+    url = "https://www.bbc.com/news/science_and_environment"
 elif category == "Technology":
     url = "https://www.bbc.com/news/technology"
 elif category == "Entertainment & Arts":
@@ -69,7 +71,10 @@ daily_news_data = pd.DataFrame({'Headline News': news_headlines, 'Link': news_li
 st.write("Here are the latest", category,"news headlines from BBC today")
 output_data = pd.DataFrame({'Index': news_index, 'Headline News':news_headlines})
 output_data = output_data.set_index('Index')
-st.table(output_data)
+if output_data.empty:
+    print ("There are no recent news in this category")
+else:
+    st.table(output_data)
 
 #Extract Content of the news article
 input_index = st.number_input("Enter the corresponding index number of the news article you want to read", step = 1, min_value = 1, max_value = len(news_headlines))
