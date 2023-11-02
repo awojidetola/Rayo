@@ -25,7 +25,7 @@ Experience Rayo where the world's news meets your interest, all in one place.
 #Select a news category
 default_url = "https://www.bbc.com"
 
-category = st.selectbox("Select a news category of your choice",("World","Business","Politics","Health","Science & Environment","Technology","Entertainment & Arts"))
+category = st.selectbox("Select a news category of your choice",("World","Business","Politics","Health","Technology","Entertainment & Arts"))
 if category == "World":
     url = "https://www.bbc.com/news/world"
 elif category == "Business":
@@ -38,8 +38,6 @@ elif category == "Technology":
     url = "https://www.bbc.com/news/technology"
 elif category == "Entertainment & Arts":
     url = "https://www.bbc.com/news/entertainment_and_arts"
-elif category == "Science & Environment":
-    url = "https://www.bbc.com/news/science_and_environment"
 
 one_day_ago = datetime.now() - timedelta(days=1)
 
@@ -94,7 +92,7 @@ def t5base(x):
     tokenizer=AutoTokenizer.from_pretrained('T5-base')
     model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
     inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt', max_length=1024, truncation=True)
-    output = model.generate(inputs, min_length=50, max_length=150, do_sample=False)
+    output = model.generate(inputs, min_length=100, max_length=250, do_sample=False)
     summary=tokenizer.decode(output[0], skip_special_tokens=True)
     # Capitalize first letter of summary
     summary = summary[0].upper() + summary[1:]
