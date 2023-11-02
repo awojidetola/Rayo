@@ -100,7 +100,7 @@ def t5base(x):
     tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
     model = AutoModelForSeq2SeqLM.from_pretrained("facebook/bart-large-cnn")
     summarization_pipeline = pipeline("summarization", model=model, tokenizer=tokenizer)
-    summary = summarization_pipeline(input_text, max_length=150, min_length=50, do_sample=False)
+    summary = summarization_pipeline(x, max_length=150, min_length=50, do_sample=False)
     text_summary =  summary[0]['summary_text']
 
     # Capitalize first letter of summary
