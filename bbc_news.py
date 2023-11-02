@@ -6,9 +6,7 @@ import numpy as np
 from datetime import datetime,timedelta
 from bs4 import BeautifulSoup
 import torch
-#from transformers import AutoTokenizer, AutoModelWithLMHead
-from transformers import pipeline
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from transformers import AutoTokenizer, AutoModelWithLMHead
 
 pipe = pipeline("summarization", model="facebook/bart-large-cnn")
 
@@ -92,21 +90,15 @@ full_story = full_text(story_link)
 
 @st.cache_resource(show_spinner="Loading Summary",max_entries=10)
 def t5base(x):
-    #tokenizer=AutoTokenizer.from_pretrained('T5-base')
-    #model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
-    #inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt', max_length=1024, truncation=True)
-    #output = model.generate(inputs, min_length=100, max_length=250, do_sample=False)
-    #summary=tokenizer.decode(output[0], skip_special_tokens=True)
-    tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
-    model = AutoModelForSeq2SeqLM.from_pretrained("facebook/bart-large-cnn")
-    summarization_pipeline = pipeline("summarization", model=model, tokenizer=tokenizer)
-    summary = summarization_pipeline(x, max_length=150, min_length=50, do_sample=False)
-    text_summary =  summary[0]['summary_text']
-
+    tokenizer=AutoTokenizer.from_pretrained('T5-base')
+    model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
+    inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt', max_length=1024, truncation=True)
+    output = model.generate(inputs, min_length=100, max_length=200, do_sample=False)
+    summary=tokenizer.decode(output[0], skip_special_tokens=True)
     # Capitalize first letter of summary
-    #summary = summary[0].upper() + summary[1:]
+    summary = summary[0].upper() + summary[1:]
     # Capitalize first letter of each sentence
-    #summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
+    summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
     return text_summary
     
 st.button("Clear", type="primary",key=5)
