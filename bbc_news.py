@@ -72,7 +72,7 @@ st.write("Here are the latest", category,"news headlines from BBC today")
 output_data = pd.DataFrame({'Index': news_index, 'Headline News':news_headlines})
 output_data = output_data.set_index('Index')
 if output_data.empty:
-    print ("There are no recent news in this category")
+    ST.write ("There are no recent news in this category")
 else:
     st.table(output_data)
 
@@ -89,7 +89,10 @@ def full_text(url, suppress_st_warning=True):
         text += paragraph.get_text() + " "
     return text
 
-full_story = full_text(story_link)
+if output_data.empty:
+    st.write ("Kindly select another category")
+else:
+    full_story = full_text(story_link)
 
 @st.cache_resource(show_spinner="Loading Summary",max_entries=10)
 def t5base(x):
@@ -103,12 +106,15 @@ def t5base(x):
     # Capitalize first letter of each sentence
     summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
     return summary
-    
-st.button("Clear", type="primary",key=5)
-if st.button('Submit',key=6):
-    our_summary = t5base(full_story)
-    st.subheader(daily_news_data.iloc[input_index-1]['Headline News'])
-    st.write(our_summary)
-    st.link_button("Check full story", story_link)
+
+if output_data.empty:
+    st.write(" ")
 else:
-    st.empty()
+    st.button("Clear", type="primary",key=5)
+    if st.button('Submit',key=6):
+        our_summary = t5base(full_story)
+        st.subheader(daily_news_data.iloc[input_index-1]['Headline News'])
+        st.write(our_summary)
+        st.link_button("Check full story", story_link)
+    else:
+        st.empty()
