@@ -97,7 +97,7 @@ def t5base(x):
     summary = summary[0].upper() + summary[1:]
     # Capitalize first letter of each sentence
     summary = '. '.join([sent.capitalize() for sent in summary.split('. ')])
-    return text_summary
+    return summary
     
 st.button("Clear", type="primary",key=5)
 if st.button('Submit',key=6):
