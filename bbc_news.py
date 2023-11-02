@@ -98,7 +98,7 @@ def t5base(x):
     tokenizer=AutoTokenizer.from_pretrained('T5-base')
     model=AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
     inputs=tokenizer.encode("sumarize: " +x,return_tensors='pt', max_length=1024, truncation=True)
-    output = model.generate(inputs, min_length=100, max_length=200, do_sample=False)
+    output = model.generate(inputs, min_length=50, max_length=150, do_sample=False)
     summary=tokenizer.decode(output[0], skip_special_tokens=True)
     # Capitalize first letter of summary
     summary = summary[0].upper() + summary[1:]
