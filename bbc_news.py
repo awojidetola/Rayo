@@ -40,14 +40,20 @@ elif category == "Technology":
 elif category == "Entertainment & Arts":
     url = "https://www.bbc.com/news/entertainment_and_arts"
 
-one_day_ago = datetime.now() - timedelta(days=1)
+if category == "Science and Environment":
+    class_ = 'ssrcss-1mrs5ns-PromoLink exn3ah91'
 
+elif category == "Entertainment and Arts":
+    class_ = 'ssrcss-1mrs5ns-PromoLink exn3ah91'
+
+else:
+    class_ = 'qa-heading-link lx-stream-post__header-link'
+    
 @st.cache_data(show_spinner=False, ttl=1800, max_entries = 10)
 def extract_news(url):
-
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-    articles = soup.find_all('a',class_='qa-heading-link lx-stream-post__header-link')
+    articles = soup.find_all('a',class_=class_)
     news_headlines = []
     news_links = []
     for article in articles:
@@ -67,6 +73,11 @@ def extract_news(url):
 news_headlines, news_links = extract_news(url)
 news_index = np.arange(1,len(news_headlines)+1)
 daily_news_data = pd.DataFrame({'Headline News': news_headlines, 'Link': news_links}, index=news_index)
+
+if category == "Science and Environment":
+    daily_news_data = daily_news_data[:-4]
+elif category == "Entertainment and Arts":
+    daily_news_data = daily_news_data[:-4]
 
 st.write("Here are the latest", category,"news headlines from BBC today")
 output_data = pd.DataFrame({'Index': news_index, 'Headline News':news_headlines})
