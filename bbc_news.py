@@ -40,10 +40,10 @@ elif category == "Technology":
 elif category == "Entertainment & Arts":
     url = "https://www.bbc.com/news/entertainment_and_arts"
 
-if category == "Science and Environment":
+if category == "Science & Environment":
     class_ = 'ssrcss-1mrs5ns-PromoLink exn3ah91'
 
-elif category == "Entertainment and Arts":
+elif category == "Entertainment & Arts":
     class_ = 'ssrcss-1mrs5ns-PromoLink exn3ah91'
 
 else:
@@ -71,13 +71,16 @@ def extract_news(url):
     return news_headlines, news_links
 
 news_headlines, news_links = extract_news(url)
+if category == "Science & Environment":
+    news_headlines = news_headlines[:-4]
+    news_links = news_links[:-4]
+elif category == "Entertainment & Arts":
+    news_headlines = news_headlines[:-4]
+    news_links = news_links[:-4]
+
 news_index = np.arange(1,len(news_headlines)+1)
 daily_news_data = pd.DataFrame({'Headline News': news_headlines, 'Link': news_links}, index=news_index)
 
-if category == "Science and Environment":
-    daily_news_data = daily_news_data[:-4]
-elif category == "Entertainment and Arts":
-    daily_news_data = daily_news_data[:-4]
 
 st.write("Here are the latest", category,"news headlines from BBC today")
 output_data = pd.DataFrame({'Index': news_index, 'Headline News':news_headlines})
@@ -103,7 +106,7 @@ if output_data.empty:
     st.write ("Kindly select another category")
 else:
     full_story = full_text(story_link)
-
+    
 @st.cache_resource(show_spinner="Loading Summary",max_entries=10)
 def t5base(x):
     tokenizer=AutoTokenizer.from_pretrained('T5-base')
