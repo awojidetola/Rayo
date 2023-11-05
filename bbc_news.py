@@ -14,7 +14,7 @@ st.title("Stay Informed with Rayo")
 st.subheader("The Ultimate News Companion")
 
 st.write('''
-In a world overflowing with information, staying informed with the correct news is vital. Rayo is your tursted ally in the pursuit of the most recent and relevant news from BBC. Choose from the category that piques your interest and get the latest news within the past 24 hours of BBC's coverage. 
+In a world overflowing with information, staying informed with the correct news is vital. Rayo is your tursted ally in the pursuit of the most recent and relevant news from BBC. Choose from the category that piques your interest and get the latest news from BBC. 
 
 But that's not all! Rayo understands that your time is precious, hence the news is presented in a concise, easy-to-digest format. Each headline is accompanied by a summary giving you a glimpse of the story and if you wnat more details, a direct link is provided for you to read the full article. 
 
@@ -82,7 +82,7 @@ news_index = np.arange(1,len(news_headlines)+1)
 daily_news_data = pd.DataFrame({'Headline News': news_headlines, 'Link': news_links}, index=news_index)
 
 
-st.write("Here are the latest", category,"news headlines from BBC today")
+st.write("Here are the latest", category,"news headlines from BBC")
 output_data = pd.DataFrame({'Index': news_index, 'Headline News':news_headlines})
 output_data = output_data.set_index('Index')
 if output_data.empty:
