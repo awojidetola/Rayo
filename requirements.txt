@@ -10,7 +10,7 @@ safetensors==0.4.0
 streamlit==1.27.2
 tensorflow==2.14.0
 tokenizers==0.14.1
-transformers==4.34.1
+#transformers==4.34.1
 urllib3==2.0.7
 pandas==2.1.1
 python-dateutil==2.8.2
